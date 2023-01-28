@@ -12,19 +12,19 @@ epa_login = ep_auth_public_routes('epa_login')
 @process_request(request, get_rq=['data'], content_type='application/json')
 def login(rq_info):
 
-    data     = rq_info['data']
-    email    = data['email']
-    password = data['password']
-    
-    if email == '' or password == '': 
-        return auth_infractuture_error_message('auth_data'), 400
-
-    dto_input  = LoginUserDTO(
-        email    = email,
-        password = password
-    )
-
     try:
+        data     = rq_info['data']
+        email    = data['email']
+        password = data['password']
+
+        if email == '' or password == '': 
+            return auth_infractuture_error_message('auth_data'), 400
+
+        dto_input  = LoginUserDTO(
+            email    = email,
+            password = password
+        )
+
         auth_login = AuthController(dto_input).execute()
     except:
         return auth_infractuture_error_message('login'), 444
