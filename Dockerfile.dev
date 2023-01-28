@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.7-alpine
+
+
+LABEL MAINTAINER="Alex Piña <alexpddd@alejandropina.com>"
+
+ENV FLASK_APP application.py
+ENV FLASK_CONFIG development
+ENV FLASK_RUN_HOST 0.0.0.0
+ENV FLASK_DEBUG 1
+ENV TEMPLATES_AUTO_RELOAD True
+
+ENV GROUP_ID=1000 \
+    USER_ID=1000
+
+WORKDIR /development/alexpddd_dev
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN addgroup -g $GROUP_ID development \
+  && adduser -D -u $USER_ID -G development alexpddd_dev -s /bin/sh
+
+COPY requirements.txt ./
+RUN  python -m venv venv
+RUN  venv/bin/pip install -r requirements.txt
+
+COPY app app
+COPY application.py dev.sh config.py ./
+
+RUN chmod +x dev.sh
+
+USER alexpddd_dev
+
+EXPOSE 5000
+
+ENTRYPOINT ["./dev.sh"]

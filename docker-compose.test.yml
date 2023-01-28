@@ -1,0 +1,51 @@
+version: '3.9'
+name: test_app
+services:
+  test_mongodb:
+    depends_on:
+      - test_web
+    hostname: ${TEST_MONGODB_HOST}
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:  ${TEST_MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${TEST_MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${TEST_MONGODB_DATABASE} 
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    image: mongo:6.0
+    command: mongod --port ${TEST_MONGODB_LOCAL_PORT}
+    logging:
+      driver: "none"
+    container_name: ${TEST_MONGODB_HOST}
+    volumes:
+      - ./test_mongodb:/data/db
+    ports:
+      - ${TEST_MONGODB_EXTERNAL_PORT}:${TEST_MONGODB_LOCAL_PORT}
+    cap_add:
+      - SYS_TIME
+    networks:
+      - time_sync
+  test_web:
+    env_file:
+      - .env
+    image: ${TEST_WEB_HOST}
+    container_name: ${TEST_WEB_HOST}
+    hostname: ${TEST_WEB_HOST}
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      args:
+        - TZ=Europe/Madrid
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app:/testing/alexpddd_test/app
+    networks:
+      - time_sync
+    command: ["ntpd", "-d"]
+networks:
+  time_sync:
+    driver: bridge
+volumes:
+  persistent:

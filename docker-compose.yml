@@ -1,0 +1,51 @@
+version: '3.9'
+name: alexddd_prod_app
+services:
+  alexddd_prod_mongodb:
+    image: mongo:6.0
+    command: mongod --port ${MONGODB_EXTERNAL_PORT} --auth
+    env_file:
+      - .env
+    container_name: ${MONGODB_HOST}
+    restart: always
+    hostname: ${MONGODB_HOST}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:  ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE} 
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    volumes:
+      - mongodbdata:/data/db
+    ports:
+      - ${MONGODB_EXTERNAL_PORT}:${MONGODB_LOCAL_PORT}
+    networks:
+      - prod_network
+  alexddd_prod_app:
+    env_file:
+      - .env
+    container_name: ${WEB_HOST}
+    hostname: ${WEB_HOST}
+    image: ${WEB_HOST}
+    build: .
+    ports:
+      - "8000:5000"
+    links:
+      - alexddd_prod_mongodb
+    depends_on:
+      - alexddd_prod_mongodb
+    volumes:
+      - aplications:/applications/alexddd
+    networks:
+      - prod_network
+    restart: always
+volumes:
+  mongodbdata:
+    name: alexddd_prod_mongodbdata
+    driver: local
+  aplications:
+    name: alexddd_prod_applications
+    driver: local
+networks:
+  prod_network:
+    driver: bridge

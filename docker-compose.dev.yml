@@ -1,0 +1,54 @@
+version: '3.9'
+name: alexddd_dev_app
+services:
+  alexddd_dev_mongodb:
+    env_file:
+      - .env
+    image: mongo:6.0
+    container_name: ${DEV_MONGODB_HOST}
+    hostname: ${DEV_MONGODB_HOST}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:  ${DEV_MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DEV_MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE} 
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    command: mongod --port ${DEV_MONGODB_LOCAL_PORT} --auth
+    volumes:
+      - ./local_mongodb:/data/db
+      - ./local_mongodb/log:/var/log/mongodb/
+    ports:
+      - ${DEV_MONGODB_EXTERNAL_PORT}:${DEV_MONGODB_LOCAL_PORT}
+    cap_add:
+      - SYS_TIME
+    networks:
+      - time_sync
+    restart: always
+  alexddd_dev_web:
+    env_file:
+      - .env
+    image: ${DEV_WEB_HOST}
+    container_name: ${DEV_WEB_HOST}
+    hostname: ${DEV_WEB_HOST}
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - TZ=Europe/Madrid
+    ports:
+      - "5000:5000"
+    links:
+      - alexddd_dev_mongodb
+    depends_on:
+      - alexddd_dev_mongodb
+    volumes:
+      - ./app:/development/alex_dev/app
+    networks:
+      - time_sync
+    command: ["ntpd", "-d"]
+    restart: always
+networks:
+  time_sync:
+    driver: bridge
+volumes:
+  persistent:
