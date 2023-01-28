@@ -79,6 +79,3 @@ The files docker-compose.dev.yml, docker-compose.test.yml and docker-compose.pro
 
 Once the container is started, the application will be available on the port specified in the .env file or in the Docker configuration file.
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
