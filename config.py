@@ -24,12 +24,6 @@ class Config:
 
 
 class DevConfig(Config):
-    print('🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡')
-    print('🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡')
-    print('🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡')
-    print('🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡')
-    print('🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡🟡')
-    # MongoDB
     MODE                  = 'dev'
     MONGODB_HOST          = str(os.environ.get('DEV_MONGODB_HOST'))
     MONGODB_LOCAL_PORT    = int(os.environ.get('DEV_MONGODB_LOCAL_PORT'))
@@ -42,13 +36,6 @@ class DevConfig(Config):
 
 
 class TestConfig(Config):
-    # MongoDB
-    print('TEST 🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
-    print('🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
-    print('🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
-    print('🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
-    print('🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
-    print('🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠🟠')
     MODE                  = 'test'
     MONGODB_HOST          = str(os.environ.get('TEST_MONGODB_HOST'))
     MONGODB_LOCAL_PORT    = int(os.environ.get('TEST_MONGODB_LOCAL_PORT'))
@@ -61,13 +48,6 @@ class TestConfig(Config):
 
 
 class ProdConfig(Config):
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')
-    print('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢')    
-    # MongoDB
     MODE                  = 'prod'
     MONGODB_HOST          = str(os.environ.get('MONGODB_HOST'))
     MONGODB_LOCAL_PORT    = int(os.environ.get('MONGODB_LOCAL_PORT'))
