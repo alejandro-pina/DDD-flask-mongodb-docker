@@ -1,5 +1,3 @@
-# DDD-flask-mongodb-docker
-Example to production APP with docker
 # AlexDDD - Scalable and Optimized Flask Application with MongoDB and Docker: A Domain-Driven Design Example
 
 ## Introduction
